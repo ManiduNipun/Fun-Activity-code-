@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Card Activity</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 360px;
+            text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .card p {
+            color: #444;
+            font-size: 16px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px 15px;
+            width: 90%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #007bff;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, #5b0fbb, #1c60e6);
+            transform: scale(1.05);
+        }
+
+        .sticker {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card" id="activityCard">
+    <h3>Step Title</h3>
+    <p>This is your step content. You can update this with JavaScript.</p>
+    <button class="btn" id="nextBtn">Next</button>
+</div>
+
+<script>
+    let step = 1;
+    let userName = "";
+
+    const card = document.getElementById("activityCard");
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+        if (step === 1) {
+            card.innerHTML = `
+                <h3>Step 1: Hello 👋</h3>
+                <p>Welcome! What’s your name?</p>
+                <input type="text" placeholder="Enter your name" id="nameInput">
+                <button class="btn" id="submitBtn">Submit</button>
+            `;
+
+            document.getElementById("submitBtn").addEventListener("click", () => {
+                userName = document.getElementById("nameInput").value.trim();
+                if (!userName) {
+                    alert("Please enter your name.");
+                    return;
+                }
+
+                step = 2;
+                card.innerHTML = `
+                    <h3>Nice to meet you, ${userName}! 😊</h3>
+                    <p>Now, how old are you?</p>
+                    <input type="number" placeholder="Enter your age" id="ageInput">
+                    <button class="btn" id="ageBtn">Submit Age</button>
+                `;
+
+                document.getElementById("ageBtn").addEventListener("click", () => {
+                    const age = parseInt(document.getElementById("ageInput").value);
+                    if (isNaN(age) || age <= 0) {
+                        alert("Please enter a valid age.");
+                        return;
+                    }
+
+                    let message = "";
+                    let emoji = "";
+
+                    if (age < 13) {
+                        emoji = "🧒🎈";
+                        message = "Play, learn, and be curious — the world is full of magic waiting for you to explore.";
+                    } else if (age < 20) {
+                        emoji = "👩‍🎓📘";
+                        message = "Embrace the journey of self-discovery and growth, for the world is yours to shape.";
+                    } else if (age < 30) {
+                        emoji = "🚀🌟";
+                        message = "Take chances, make mistakes, and grow. Every experience teaches you something valuable.";
+                    } else if (age < 50) {
+                        emoji = "💼📈";
+                        message = "Balance your ambitions with self-care. Success is also about inner peace.";
+                    } else if (age < 60) {
+                        emoji = "🧘‍♂️🌼";
+                        message = "You’ve come far. Now is the time to reflect, give back, and enjoy the richness of life.";
+                    } else {
+                        emoji = "🌅📖";
+                        message = "Share your stories, your love, and your wisdom. You are a living library of experience.";
+                    }
+
+                    card.innerHTML = `
+                        <div class="sticker">${emoji}</div>
+                        <h3>Hello, ${userName}!</h3>
+                        <p>${message}</p>
+                        <button class="btn">Finish 🎉</button>
+                    `;
+                });
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
